@@ -1,0 +1,9 @@
+node_modules
+.devcontainer
+.vscode
+.cosine
+.env.local
+.env
+
+.cosine
+.vercel
