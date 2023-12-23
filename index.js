@@ -9,7 +9,7 @@ const morgan = require("morgan");
 const port = process.env.PORT || 5000;
 
 const corsOptions = {
-  origin: ["http://localhost:5173", "http://localhost:5174"],
+  origin: ["http://localhost:5173", "http://localhost:5174", "https://tasker-task-management-tools.web.app", "https://tasker-task-management-tools.firebaseapp.com"],
   credentials: true,
   optionSuccessStatus: 200,
 };
