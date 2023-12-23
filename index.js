@@ -89,6 +89,101 @@ const verify = async (req, res, next) => {
     next();
   });
 };
+
+//Task Related api
+// app.post("/api/v1/task", verify, async (req, res) => {
+//   const newTask = req.body;
+//   const result = await taskCollection.insertOne(newTask);
+//   res.send(result);
+// });
+app.get("/api/v1/all-to-do-tasks", async (req, res) => {
+  try {
+    const assignedTo = req.query.email;
+    const status = req.query.status;
+    let queryObj = {};
+    if (assignedTo) {
+      queryObj.assignedTo = assignedTo;
+    }
+    if(status){
+        queryObj.status = status;
+    }
+    console.log(queryObj)
+    const result = await taskCollection.find({ assignedTo: 'fdfiroz@gmail.com' }).toArray();
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/api/v1/create-new-task", async (req, res) => {
+  try {
+    const newTask = req.body;
+    const result = await taskCollection.insertOne(newTask);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.put("/api/v1/update-task-status/:id", async (req, res) => {
+  try{
+    const id = req.params.id;
+    const updatedTask = req.body;
+    const filter = {_id: new ObjectId(id)};
+    const updateTaskStatus = {
+      $set: {
+        status: updatedTask.status
+      }
+    }
+    const result = await taskCollection.updateOne(filter, updateTaskStatus)
+    res.send(result)
+  } catch(error) {
+    console.log(error)
+  }
+})
+
+app.get("/api/v1/view-task/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)}
+    const result = await taskCollection.findOne(query);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+
+app.put("/api/v1/update-task/:id", async (req, res) => {
+  try{
+    const id = req.params.id;
+    const updatedTask = req.body;
+    const filter = {_id: new ObjectId(id)};
+    const updateTaskStatus = {
+      $set: {
+        title: updatedTask.title,
+        description: updatedTask.description,
+        dueDate: updatedTask.dueDate,
+        priority: updatedTask.priority
+      }
+    }
+    const result = await taskCollection.updateOne(filter, updateTaskStatus)
+    res.send(result)
+  } catch(error) {
+    console.log(error)
+  }
+})
+
+app.delete("/api/v1/delete-task/:id", async(req, res) => {
+  try{
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)};
+    const result = await taskCollection.deleteOne(query);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+  }
+})
 //add user info
 app.post("/api/v1/user", async (req, res) => {
   const newUserInfo = req.body;
