@@ -108,7 +108,7 @@ app.get("/api/v1/all-to-do-tasks", async (req, res) => {
         queryObj.status = status;
     }
     console.log(queryObj)
-    const result = await taskCollection.find({ assignedTo: 'fdfiroz@gmail.com' }).toArray();
+    const result = await taskCollection.find(queryObj).toArray();
     res.send(result);
   } catch (error) {
     console.log(error);
